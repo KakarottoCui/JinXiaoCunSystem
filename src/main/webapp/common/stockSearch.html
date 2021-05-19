@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>当前库存查询</title>
+<link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.3.3/themes/default/easyui.css"></link>
+<link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.3.3/themes/icon.css"></link>
+<script type="text/javascript" src="/static/jquery-easyui-1.3.3/jquery.min.js"></script>
+<script type="text/javascript" src="/static/jquery-easyui-1.3.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/static/jquery-easyui-1.3.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript">
+
+
+
+    function formatAmount(val,row){
+		return "￥"+(row.inventoryQuantity*row.purchasingPrice).toFixed(2);
+	}
+    
+    function formatGoodsTypeName(val,row){
+		return row.type.name;
+	}
+    
+    function formatLastPurchasingPrice(val,row){
+		return "￥"+val;	
+	}
+	
+    function formatPurchasingPrice(val,row){
+		return "￥"+val;	
+	}
+	
+	function formatSellingPrice(val,row){
+		return "￥"+val;	
+	}
+	 
+	function chooseGoodsType(){
+		$("#dlg2").dialog("open").dialog("setTitle","选择商品类别");
+		$("#typeTree").tree({
+			url:'/admin/goodsType/loadTreeInfo',
+			onLoadSuccess:function(node, data){
+				var rootNode = $("#typeTree").tree('getRoot'); 
+				$("#typeTree").tree('expand',rootNode.target);
+			}
+		});
+	}
+	
+	function saveGoodsTypeChoose(){
+		var node = $('#typeTree').tree('getSelected'); // 获取选中节点
+		$("#typeId").val(node.id);
+		$("#typeName").val(node.text);
+		$("#dlg2").dialog("close");
+	}
+	
+	function closeGoodsTypeChooseDialog(){
+		$("#dlg2").dialog("close");
+	}
+	
+	function searchStock(){
+		$("#dg").datagrid('load',{
+			"type.id":$("#typeId").val(),
+			"codeOrName":$("#codeOrName").val()
+		});
+	}
+
+</script>
+</head>
+<body style="margin: 1px">
+<table id="dg" title="当前库存查询" class="easyui-datagrid"
+   fitColumns="true" pagination="true" rownumbers="true" pageSize=20
+   url="/admin/goods/listInventory" fit="true" toolbar="#tb">
+   <thead>
+   	<tr>    
+   		<th field="code" width="30" align="center">商品编码</th>
+   		<th field="name" width="150" align="center">商品名称</th>
+   		<th field="typeName" width="50" align="center" formatter="formatGoodsTypeName">类别</th>
+   		<th field="model" width="50" align="center">型号</th>
+   		<th field="inventoryQuantity" width="50" align="center">库存数量</th>
+   		<th field="saleTotal" width="50" align="center">销售总数</th>
+   		<th field="lastPurchasingPrice" width="50" align="right" formatter="formatLastPurchasingPrice">上次进价</th>
+   		<th field="purchasingPrice" width="50" align="right" formatter="formatPurchasingPrice">成本均价</th>
+   		<th field="sellingPrice" width="50" align="right" formatter="formatSellingPrice">销售价</th>
+   		<th field="amount" width="60" align="right" formatter="formatAmount">库存总值</th>
+   		<th field="unit" width="50" align="center" >单位</th>
+   		<th field="producer" width="200" align="center">生产产商</th>
+   		<th field="remarks" width="150" align="center" hidden=true>备注</th>
+   	</tr>
+   </thead>
+ </table>
+ 
+ <div id="tb">
+ 	<div style="padding: 5px">
+ 		&nbsp;商品类别&nbsp;
+ 		<input type="hidden" id="typeId"/>
+ 		<input type="text" id="typeName"  style="width: 90px;" readonly="readonly" onclick="chooseGoodsType()"/>
+ 		&nbsp;商品编码或者名称：&nbsp;<input type="text" id="codeOrName" size="20" onkeydown="if(event.keyCode==13) searchStock()"/>
+ 		<a href="javascript:searchStock()" class="easyui-linkbutton" iconCls="icon-search" plain="true">搜索</a>
+ 	</div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+ </div>
+ 
+ 
+  <div id="dlg2" class="easyui-dialog" style="width:180px;height:300px;padding: 10px 10px;top: 52px;left: 80px"
+   closed="true" buttons="#dlg-buttons2">
+   
+   	<ul id="typeTree" class="easyui-tree"></ul>
+   
+  </div>
+ 
+ <div id="dlg-buttons2">
+ 	<a href="javascript:saveGoodsTypeChoose()" class="easyui-linkbutton" iconCls="icon-ok" plain="true">选择</a>
+ 	<a href="javascript:closeGoodsTypeChooseDialog()" class="easyui-linkbutton" iconCls="icon-cancel" plain="true">关闭</a>
+ </div>
+
+</body>
+</html>

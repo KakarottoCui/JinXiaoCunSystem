@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>库存报警</title>
+<link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.3.3/themes/default/easyui.css"></link>
+<link rel="stylesheet" type="text/css" href="/static/jquery-easyui-1.3.3/themes/icon.css"></link>
+<script type="text/javascript" src="/static/jquery-easyui-1.3.3/jquery.min.js"></script>
+<script type="text/javascript" src="/static/jquery-easyui-1.3.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/static/jquery-easyui-1.3.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript">
+
+	function formatPurchasingPrice(val,row){
+		return "￥"+val;	
+	}
+	
+	function formatSellingPrice(val,row){
+		return "￥"+val;	
+	}
+	
+	function formatGoodsTypeName(val,row){
+		return row.type.name;
+	}
+	
+</script>
+</head>
+<body style="margin: 1px">
+<table id="dg" title="库存报警" class="easyui-datagrid" singleSelect="true"
+   fitColumns="true"
+   url="/admin/goods/listAlarm" fit="true" >
+   <thead>
+   	<tr>    
+   		<th field="code" width="30" align="center">商品编码</th>
+   		<th field="name" width="150" align="center">商品名称</th>
+   		<th field="model" width="50" align="center">商品型号</th>
+   		<th field="typeName" width="50" align="center" formatter="formatGoodsTypeName">类别</th>
+   		<th field="unit" width="50" align="center" >单位</th>
+   		<th field="purchasingPrice" width="50" align="right" formatter="formatPurchasingPrice">采购价</th>
+   		<th field="sellingPrice" width="50" align="right" formatter="formatSellingPrice">销售价</th>
+   		<th field="inventoryQuantity" width="50" align="center" >当前库存</th>
+   		<th field="minNum" width="50" align="center" >库存下限</th>
+   		<th field="producer" width="200" align="center">生产产商</th>
+   		<th field="remarks" width="150" align="center" hidden=true>备注</th>
+   	</tr>
+   </thead>
+ </table>
+ 
+</body>
+</html>
