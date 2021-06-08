@@ -6,7 +6,7 @@
 
 运行环境
 
-jdk8+tomcat8+mysql+I+maven
+jdk8+tomcat8+mysql+Idea+maven
 
 项目技术
 
